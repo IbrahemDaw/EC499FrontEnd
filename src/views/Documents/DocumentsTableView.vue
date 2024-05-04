@@ -340,17 +340,31 @@ const getCategories = () => {
                           ></v-text-field>
                         </v-col>
 
-                        <!-- <v-col>
+                        
+                      </v-row>
+                      <v-row>
+                        <v-col>
+                          <v-select
+                            v-model="documentDetailed.categories"
+                            :items="categories"
+                            item-title="name"
+                            item-value="id"
+                            label="Categories"
+                            :disabled="!editUser"
+                            multiple
+                          ></v-select>
+                        </v-col>
+                        <v-col>
                           <v-select
                             v-model="documentDetailed.tags"
                             :items="tags"
                             item-title="name"
                             item-value="id"
-                            label="Roles"
+                            label="Tags"
                             :disabled="!editUser"
                             multiple
                           ></v-select>
-                        </v-col> -->
+                        </v-col> 
                       </v-row>
                     </v-container>
                   </v-card-text>
