@@ -66,10 +66,12 @@ const filterModel = ref({
   email: null,
   isEnabled: null,
   pageNumber: 1,
-  pageSize: 30
+  pageSize:30
 })
+const pageNumber = ref(1)
 const getUsersAsync = () => {
   isLoading.value = true
+  filterModel.value.pageNumber = pageNumber 
   get('api/User/filter', filterModel.value)
     .then((response) => {
       isLoading.value = false
@@ -85,7 +87,7 @@ onMounted(() => {
   getUsersAsync()
   getRoles()
 })
-watch(filterModel.pageNumber, getUsersAsync)
+watch(pageNumber, getUsersAsync)
 
 const showFilterForm = ref(false)
 const toggelFilterForm = () => {
@@ -361,7 +363,7 @@ const updateUser = ()=>{
                           <v-text-field
                             v-model="userDetailed.userName"
                             label="User Name"
-                            :disabled="!editUser"
+                            disabled
                           ></v-text-field>
                         </v-col>
                         <v-col cols="12" md="4" sm="6">
@@ -444,7 +446,7 @@ const updateUser = ()=>{
             <template v-slot:bottom>
               <div>
                 <v-pagination
-                  v-model="filterModel.pageNumber"
+                  v-model="pageNumber"
                   :length="items.pageCount"
                   total-visible="5"
                 ></v-pagination>
