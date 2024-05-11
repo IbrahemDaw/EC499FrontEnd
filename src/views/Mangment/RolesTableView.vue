@@ -229,7 +229,7 @@ const updaterole = () => {
                     <v-select
                       v-model="newRoleModel.permissionIds"
                       :items="permission"
-                      item-title="name"
+                      item-title="displayName"
                       item-value="id"
                       label="Permission"
                       multiple
@@ -305,7 +305,7 @@ const updaterole = () => {
                           <v-select
                             v-model="roleDetailed.permissions"
                             :items="permission"
-                            item-title="name"
+                            item-title="displayName"
                             item-value="id"
                             label="Permission"
                             :disabled="!editrole"

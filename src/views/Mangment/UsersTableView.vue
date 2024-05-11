@@ -103,7 +103,8 @@ const newUserModel = reactive({
   userName: null,
   password: null,
   phoneNumber: null,
-  email: null
+  email: null,
+  roles : null
 })
 const addNewUser = () => {
   post('api/User', newUserModel)
@@ -154,7 +155,6 @@ const enableUsers = () => {
 }
 
 const roles = ref([])
-const selectedRoles = ref([])
 const getRoles = () => {
   get('api/role').then((response) => {
     roles.value = response.data
@@ -271,7 +271,7 @@ const updateUser = ()=>{
                   </v-col>
                   <v-col>
                     <v-select
-                      v-model="selectedRoles"
+                      v-model="newUserModel.roles"
                       :items="roles"
                       item-title="name"
                       item-value="id"
@@ -305,7 +305,6 @@ const updateUser = ()=>{
                       clearable
                     ></v-text-field>
                   </v-col>
-
                   <v-col>
                     <v-text-field
                       v-model="filterModel.email"
