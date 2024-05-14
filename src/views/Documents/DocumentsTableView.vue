@@ -1,6 +1,6 @@
 <script setup>
 import { computed, ref, onMounted, watch, reactive } from 'vue'
-import { get, post, put, del } from '@/services/apiServices'
+import { get, post, put, del,postFile } from '@/services/apiServices'
 import {
   mdiMonitorCellphone,
   mdiTableBorder,
@@ -102,24 +102,41 @@ const newDocumentModel = reactive({
   tags: []
 })
 const uploadedFile = ref({})
+// const addNewDocument = () => {
+//   console.log('newDocumentModel', uploadedFile.value)
+//   post(
+//     `api/Document?Title=${newDocumentModel.title}&Description=${
+//       newDocumentModel.description
+//     }&${newDocumentModel.tags.map((tag) => `tags=${tag}`).join('&')}&${newDocumentModel.categories
+//       .map((cat) => `categories=${cat}`)
+//       .join('&')}`,
+//     uploadedFile.value
+//   )
+//     .then((response) => {
+//       alert('document added')
+//       getDocumentsAsync()
+//     })
+//     .catch((e) => {
+//       showError.value = true
+//     })
+// }
 const addNewDocument = () => {
-  post(
+  const formData = new FormData()
+  console.log('uploadedFile', uploadedFile.value[0])
+  console.log()
+  formData.append('file', uploadedFile.value[0])
+  postFile(
     `api/Document?Title=${newDocumentModel.title}&Description=${
       newDocumentModel.description
     }&${newDocumentModel.tags.map((tag) => `tags=${tag}`).join('&')}&${newDocumentModel.categories
       .map((cat) => `categories=${cat}`)
       .join('&')}`,
-    uploadedFile.value
-  )
-    .then((response) => {
-      alert('document added')
-      getDocumentsAsync()
-    })
-    .catch((e) => {
-      showError.value = true
-    })
+    formData
+  ).then((response) => {
+    alert('document added')
+    getDocumentsAsync()
+  })
 }
-
 const deleteDialog = ref(false)
 const taggelDelete = () => {
   deleteDialog.value = !deleteDialog.value
@@ -262,7 +279,7 @@ const getCategories = () => {
                 </v-row>
                 <v-row>
                   <v-col> </v-col
-                  ><v-col><v-file-input v-model="uploadedFile" label="File" ></v-file-input></v-col>
+                  ><v-col><v-file-input v-model="uploadedFile" label="File"></v-file-input></v-col>
                 </v-row>
                 <v-btn :loading="isLoading" @click="addNewDocument">Add</v-btn>
               </v-container>
@@ -290,13 +307,13 @@ const getCategories = () => {
                   </v-col>
                   <v-col>
                     <v-select
-                            v-model="filterModel.tags"
-                            :items="tags"
-                            item-title="name"
-                            item-value="id"
-                            label="Tags"
-                            multiple
-                          ></v-select>
+                      v-model="filterModel.tags"
+                      :items="tags"
+                      item-title="name"
+                      item-value="id"
+                      label="Tags"
+                      multiple
+                    ></v-select>
                   </v-col>
                   <v-col>
                     <v-select
@@ -339,8 +356,6 @@ const getCategories = () => {
                             :disabled="!editUser"
                           ></v-text-field>
                         </v-col>
-
-                        
                       </v-row>
                       <v-row>
                         <v-col>
@@ -364,7 +379,7 @@ const getCategories = () => {
                             :disabled="!editUser"
                             multiple
                           ></v-select>
-                        </v-col> 
+                        </v-col>
                       </v-row>
                     </v-container>
                   </v-card-text>

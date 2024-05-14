@@ -33,6 +33,20 @@ export const post = async (path, body) => {
     throw e
   }
 }
+export const postFile = async (path, body) => {
+  try {
+    const response = await axiosConfig.post(path, body, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+    return response
+  } catch (e) {
+    if (e.status == 401) localStorage.removeItem('user-token')
+    throw e
+  }
+}
+
 export const put = async (path, body, listOfIds) => {
   if (listOfIds != null) {
     path += '?'
