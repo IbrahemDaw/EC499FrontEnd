@@ -33,6 +33,7 @@ export const post = async (path, body) => {
     throw e
   }
 }
+
 export const postFile = async (path, body) => {
   try {
     const response = await axiosConfig.post(path, body, {
@@ -46,7 +47,29 @@ export const postFile = async (path, body) => {
     throw e
   }
 }
+export const download = async (path) => {
+  try {
+    const response = await axiosConfig.get(path, {
+      responseType: 'blob'
+    })
 
+    const url = window.URL.createObjectURL(new Blob([response.data]))
+    const contentDisposition = response.headers['content-disposition'];
+    console.log(response.headers)
+    const filenameMatch = contentDisposition.match(/filename="(.+)"/);
+    const filename = filenameMatch ? filenameMatch[1] : '';
+    // Create a link element and click it to trigger the file download
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download',filename)
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  } catch (error) {
+    // Handle any errors that occur during the file download
+    console.error('An error occurred:', error)
+  }
+}
 export const put = async (path, body, listOfIds) => {
   if (listOfIds != null) {
     path += '?'

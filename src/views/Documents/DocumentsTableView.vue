@@ -1,24 +1,14 @@
 <script setup>
 import { computed, ref, onMounted, watch, reactive } from 'vue'
-import { get, post, put, del,postFile } from '@/services/apiServices'
+import { get, post, put, del,postFile ,download} from '@/services/apiServices'
 import {
-  mdiMonitorCellphone,
-  mdiTableBorder,
-  mdiTableOff,
-  mdiGithub,
-  mdiDropbox,
-  mdiFaceAgent,
-  mdiFormDropdown,
-  mdiArrowUpDown,
-  mdiArrowDown,
-  mdiArrowUp,
   mdiFilter,
   mdiDelete,
-  mdiEyePlus,
-  mdiApplicationBracesOutline,
-  mdiAccountPlus,
-  mdiAccountEdit,
-  mdiCancel
+  mdiPencil,
+  mdiInformation,
+  mdiFileDocumentPlus,
+  mdiFileDocumentMultiple,
+  mdiArrowDownBold
 } from '@mdi/js'
 import SectionMain from '@/components/SectionMain.vue'
 import NotificationBar from '@/components/NotificationBar.vue'
@@ -35,17 +25,7 @@ import {
   VIcon,
   VSelect
 } from 'vuetify/lib/components/index.mjs'
-import {
-  mdiContrastCircle,
-  mdiInformation,
-  mdiCheckCircle,
-  mdiAlert,
-  mdiAlertCircle,
-  mdiOpenInNew,
-  mdiClose,
-  mdiReload,
-  mdiTrendingUp
-} from '@mdi/js'
+
 
 const columns = [
   { title: 'Titel', value: 'title' },
@@ -65,6 +45,8 @@ const filterModel = ref({
   pageNumber: 1,
   pageSize: 30
 })
+
+const selectedDocuments = ref([])
 const getDocumentsAsync = () => {
   isLoading.value = true
   filterModel.value.pageNumber = pageNumber.value
@@ -102,24 +84,6 @@ const newDocumentModel = reactive({
   tags: []
 })
 const uploadedFile = ref({})
-// const addNewDocument = () => {
-//   console.log('newDocumentModel', uploadedFile.value)
-//   post(
-//     `api/Document?Title=${newDocumentModel.title}&Description=${
-//       newDocumentModel.description
-//     }&${newDocumentModel.tags.map((tag) => `tags=${tag}`).join('&')}&${newDocumentModel.categories
-//       .map((cat) => `categories=${cat}`)
-//       .join('&')}`,
-//     uploadedFile.value
-//   )
-//     .then((response) => {
-//       alert('document added')
-//       getDocumentsAsync()
-//     })
-//     .catch((e) => {
-//       showError.value = true
-//     })
-// }
 const addNewDocument = () => {
   const formData = new FormData()
   console.log('uploadedFile', uploadedFile.value[0])
@@ -141,9 +105,9 @@ const deleteDialog = ref(false)
 const taggelDelete = () => {
   deleteDialog.value = !deleteDialog.value
 }
-const deleteDocument = (id) => {
+const deleteDocument = () => {
   isLoading.value = true
-  del(`api/document/${id}`)
+  del(`api/document`,selectedDocuments.value)
     .then((response) => {
       taggelDelete()
       getDocumentsAsync()
@@ -215,7 +179,7 @@ const getCategories = () => {
 <template>
   <LayoutAuthenticated>
     <SectionMain>
-      <SectionTitleLineWithButton :icon="mdiTableBorder" title="Documents" main />
+      <SectionTitleLineWithButton :icon="mdiFileDocumentMultiple" title="Documents" main />
       <CardBox class="mb-6" has-table>
         <CardBox v-if="showError" :class="cardClass">
           <div class="space-y-3">
@@ -233,7 +197,8 @@ const getCategories = () => {
           <div class="filter-btm">
             <BaseButton :icon="mdiFilter" variant="plain" elevation="5" @click="toggelFilterForm">
             </BaseButton>
-            <BaseButton :icon="mdiAccountPlus" @click="toggelAddUserCardBox"> </BaseButton>
+            <BaseButton :icon="mdiFileDocumentPlus" @click="toggelAddUserCardBox"> </BaseButton>
+            <BaseButton :icon="mdiDelete" @click="taggelDelete"> </BaseButton>
           </div>
           <CardBox v-show="addDocumetCarbox"
             ><v-form v-model="valid">
@@ -335,6 +300,9 @@ const getCategories = () => {
             :headers="columns"
             :items="documents.data"
             :loading="isLoading"
+            show-select
+            v-model="selectedDocuments"
+
           >
             <template v-slot:top>
               <v-dialog v-model="dialog" max-width="1000px">
@@ -408,7 +376,7 @@ const getCategories = () => {
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="blue-darken-1" variant="text" @click="taggelDelete">Cancel</v-btn>
-                    <v-btn color="blue-darken-1" variant="text" @click="console.log('___')"
+                    <v-btn color="blue-darken-1" variant="text" @click="deleteDocument"
                       >Delete</v-btn
                     >
                     <v-spacer></v-spacer>
@@ -418,7 +386,8 @@ const getCategories = () => {
             </template>
             <template v-slot:item.actions="{ item }">
               <div class="item-btm">
-                <BaseButton :icon="mdiAccountEdit" @click="showEditDialog(item.id)"></BaseButton>
+                <BaseButton :icon="mdiArrowDownBold" @click="download('/api/Document/download/9')"></BaseButton>
+                <BaseButton :icon="mdiPencil" @click="showEditDialog(item.id)"></BaseButton>
                 <BaseButton :icon="mdiInformation" @click="showDialog(item.id)"></BaseButton>
               </div>
             </template>

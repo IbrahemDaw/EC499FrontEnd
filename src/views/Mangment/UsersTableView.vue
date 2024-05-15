@@ -86,6 +86,7 @@ const getUsersAsync = () => {
 onMounted(() => {
   getUsersAsync()
   getRoles()
+  getPermissions()
 })
 watch(pageNumber, getUsersAsync)
 
@@ -158,7 +159,12 @@ const roles = ref([])
 const getRoles = () => {
   get('api/role').then((response) => {
     roles.value = response.data
-    console.log(roles.value)
+  })
+}
+const permissions = ref([])
+const getPermissions = () => {
+  get('api/UserManagement/Permission').then((response) => {
+    permissions.value = response.data
   })
 }
 const dialog = ref(false)
@@ -379,21 +385,37 @@ const updateUser = ()=>{
                             :disabled="!editUser"
                           ></v-text-field>
                         </v-col>
-                        <v-col>
+                       
+                        <v-col class="item-btm" cols="12" md="4" sm="6">
+                          <v-checkbox v-model="userDetailed.isEnabled" :disabled="!editUser"
+                            >Enabled</v-checkbox
+                          >
+                        </v-col>
+                      </v-row>
+                      <v-row>
+                        <v-col cols="12" md="4" sm="6">
                           <v-select
                             v-model="userDetailed.roles"
                             :items="roles"
                             item-title="name"
                             item-value="id"
                             label="Roles"
-                            :disabled="!editUser"
                             multiple
+                            persistent-hint
+                            :disabled="!editUser"
                           ></v-select>
                         </v-col>
-                        <v-col class="item-btm" cols="12" md="4" sm="6">
-                          <v-checkbox v-model="userDetailed.isEnabled" :disabled="!editUser"
-                            >Enabled</v-checkbox
-                          >
+                        <v-col>
+                          <v-select
+                            v-model="userDetailed.permissions"
+                            :items="permissions"
+                            item-title="displayName"
+                            item-value="id"
+                            label="Permissions"
+                            multiple
+                            persistent-hint
+                            :disabled="!editUser"
+                          ></v-select>
                         </v-col>
                       </v-row>
                     </v-container>

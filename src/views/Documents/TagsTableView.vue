@@ -38,14 +38,10 @@ import {
 } from 'vuetify/lib/components/index.mjs'
 import {
   mdiContrastCircle,
+  mdiPencil,
   mdiInformation,
   mdiCheckCircle,
-  mdiAlert,
-  mdiAlertCircle,
-  mdiOpenInNew,
-  mdiClose,
-  mdiReload,
-  mdiTrendingUp
+  mdiPlus
 } from '@mdi/js'
 
 const columns = [
@@ -198,7 +194,7 @@ const updateTag = () => {
           <div class="filter-btm">
             <BaseButton :icon="mdiFilter" variant="plain" elevation="5" @click="toggelFilterForm">
             </BaseButton>
-            <BaseButton :icon="mdiAccountPlus" @click="toggelAddCard"> </BaseButton>
+            <BaseButton :icon="mdiPlus" @click="toggelAddCard"> </BaseButton>
 
             <div v-if="selectedTags.length" class="filter-btm">
               <BaseButton :icon="mdiDelete" @click="taggelDelete"> </BaseButton>
@@ -332,7 +328,7 @@ const updateTag = () => {
             </template>
             <template v-slot:item.actions="{ item }">
               <div class="item-btm">
-                <BaseButton :icon="mdiAccountEdit" @click="showEditDialog(item.id)"></BaseButton>
+                <BaseButton :icon="mdiPencil" @click="showEditDialog(item.id)"></BaseButton>
                 <BaseButton :icon="mdiInformation" @click="showDialog(item.id)"></BaseButton>
               </div>
             </template>

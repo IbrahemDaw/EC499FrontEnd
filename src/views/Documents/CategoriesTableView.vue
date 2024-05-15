@@ -18,7 +18,13 @@ import {
   mdiApplicationBracesOutline,
   mdiAccountPlus,
   mdiAccountEdit,
-  mdiCancel
+  mdiCancel,
+mdiArchiveEdit,
+mdiDrawPen,
+mdiFountainPen,
+mdiFileEdit,
+mdiEpsilon,
+mdiPlus
 } from '@mdi/js'
 import SectionMain from '@/components/SectionMain.vue'
 import NotificationBar from '@/components/NotificationBar.vue'
@@ -44,7 +50,8 @@ import {
   mdiOpenInNew,
   mdiClose,
   mdiReload,
-  mdiTrendingUp
+  mdiTrendingUp,
+  mdiPencil
 } from '@mdi/js'
 
 const columns = [
@@ -185,7 +192,7 @@ const updateCategory = () => {
           <div class="filter-btm">
             <BaseButton :icon="mdiFilter" variant="plain" elevation="5" @click="toggelFilterForm">
             </BaseButton>
-            <BaseButton :icon="mdiAccountPlus" @click="toggelAddCategoryBox"> </BaseButton>
+            <BaseButton :icon="mdiPlus" @click="toggelAddCategoryBox"> </BaseButton>
 
             <div v-if="selectedCategories.length" class="filter-btm">
               <BaseButton :icon="mdiDelete" @click="taggelDelete"> </BaseButton>
@@ -336,7 +343,7 @@ const updateCategory = () => {
             </template>
             <template v-slot:item.actions="{ item }">
               <div class="item-btm">
-                <BaseButton :icon="mdiAccountEdit" @click="showEditDialog(item.id)"></BaseButton>
+                <BaseButton :icon="mdiPencil" @click="showEditDialog(item.id)"></BaseButton>
                 <BaseButton :icon="mdiInformation" @click="showDialog(item.id)"></BaseButton>
               </div>
             </template>
