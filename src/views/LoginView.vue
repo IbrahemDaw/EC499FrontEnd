@@ -32,7 +32,8 @@ const submit = async () => {
   post('api/UserManagement/Login', form)
     .then((respons) => {
       localStorage.setItem('user-token', respons.data.token)
-      router.push('/dashboard')
+      localStorage.setItem('pages',JSON.stringify(respons.data.pages))
+      router.push('/profile')
     })
     .catch((e) => {
       error.value = !error.value

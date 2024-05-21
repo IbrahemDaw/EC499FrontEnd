@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed,onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { mdiMinus, mdiPlus } from '@mdi/js'
 import { getButtonColor } from '@/colors.js'
@@ -21,7 +21,13 @@ const hasColor = computed(() => props.item && props.item.color)
 const asideMenuItemActiveStyle = computed(() =>
   hasColor.value ? '' : 'aside-menu-item-active font-bold'
 )
-
+const pages = ref({})
+const show = ref(false)
+const getPages = ()=>{
+  pages.value = JSON.parse(localStorage.getItem('pages'))
+  show.value = pages.value[props.item.showValue]
+}
+onMounted(getPages)
 const isDropdownActive = ref(false)
 
 const componentClass = computed(() => [
@@ -45,6 +51,7 @@ const menuClick = (event) => {
 <template>
   <li>
     <component
+      v-if="item.show ?? show"
       :is="item.to ? RouterLink : 'a'"
       v-slot="vSlot"
       :to="item.to ?? null"
