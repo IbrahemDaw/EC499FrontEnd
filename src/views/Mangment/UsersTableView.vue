@@ -66,12 +66,12 @@ const filterModel = ref({
   email: null,
   isEnabled: null,
   pageNumber: 1,
-  pageSize:30
+  pageSize: 30
 })
 const pageNumber = ref(1)
 const getUsersAsync = () => {
   isLoading.value = true
-  filterModel.value.pageNumber = pageNumber 
+  filterModel.value.pageNumber = pageNumber
   get('api/User/filter', filterModel.value)
     .then((response) => {
       isLoading.value = false
@@ -105,7 +105,7 @@ const newUserModel = reactive({
   password: null,
   phoneNumber: null,
   email: null,
-  roles : null
+  roles: []
 })
 const addNewUser = () => {
   post('api/User', newUserModel)
@@ -122,9 +122,9 @@ const NameRole = (name) => {
   if (name === null) return true
   return name.length > 5 ? true : 'name mast be more the 5 letters'
 }
- 
+
 const deleteDialog = ref(false)
-const taggelDelete =()=>{
+const taggelDelete = () => {
   deleteDialog.value = !deleteDialog.value
 }
 const deleteUsers = () => {
@@ -173,7 +173,7 @@ const closeDialog = () => {
 }
 const userInfoCard = ref({ edit: false, loading: false })
 const editUser = ref(false)
-const userDetailed = ref({roles:[{}]})
+const userDetailed = ref({ roles: [{}] })
 const getUserDerails = (id) => {
   get(`api/user/${id}`)
     .then((res) => {
@@ -197,9 +197,8 @@ const showEditDialog = (id) => {
   editUser.value = true
 }
 
-const updateUser = ()=>{
-  put('api/user',userDetailed.value)
-  .then((res)=>{
+const updateUser = () => {
+  put('api/user', userDetailed.value).then((res) => {
     getUsersAsync()
   })
   closeDialog()
@@ -385,7 +384,7 @@ const updateUser = ()=>{
                             :disabled="!editUser"
                           ></v-text-field>
                         </v-col>
-                       
+
                         <v-col class="item-btm" cols="12" md="4" sm="6">
                           <v-checkbox v-model="userDetailed.isEnabled" :disabled="!editUser"
                             >Enabled</v-checkbox
@@ -426,7 +425,12 @@ const updateUser = ()=>{
                     <v-btn color="blue-darken-1" variant="text" @click="closeDialog">
                       Cancel
                     </v-btn>
-                    <v-btn v-show="editUser" color="blue-darken-1" variant="text" @click="updateUser">
+                    <v-btn
+                      v-show="editUser"
+                      color="blue-darken-1"
+                      variant="text"
+                      @click="updateUser"
+                    >
                       Save
                     </v-btn>
                   </v-card-actions>
@@ -440,9 +444,7 @@ const updateUser = ()=>{
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="blue-darken-1" variant="text" @click="taggelDelete">Cancel</v-btn>
-                    <v-btn color="blue-darken-1" variant="text" @click="deleteUsers"
-                      >Delete</v-btn
-                    >
+                    <v-btn color="blue-darken-1" variant="text" @click="deleteUsers">Delete</v-btn>
                     <v-spacer></v-spacer>
                   </v-card-actions>
                 </v-card>

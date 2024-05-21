@@ -1,6 +1,6 @@
 <script setup>
 import { computed, ref, onMounted, watch, reactive } from 'vue'
-import { get, post, put, del,postFile ,download} from '@/services/apiServices'
+import { get, post, put, del, postFile, download } from '@/services/apiServices'
 import {
   mdiFilter,
   mdiDelete,
@@ -26,10 +26,10 @@ import {
   VSelect
 } from 'vuetify/lib/components/index.mjs'
 
-
 const columns = [
-  { title: 'Titel', value: 'title' },
+  { title: 'Title', value: 'title' },
   { title: 'Description', value: 'description' },
+  { title: 'FileType', value: 'documentExtension' },
   { title: 'Actions', key: 'actions' }
 ]
 const delectedDocumetns = ref([])
@@ -107,7 +107,7 @@ const taggelDelete = () => {
 }
 const deleteDocument = () => {
   isLoading.value = true
-  del(`api/document`,selectedDocuments.value)
+  del(`api/document`, selectedDocuments.value)
     .then((response) => {
       taggelDelete()
       getDocumentsAsync()
@@ -302,7 +302,6 @@ const getCategories = () => {
             :loading="isLoading"
             show-select
             v-model="selectedDocuments"
-
           >
             <template v-slot:top>
               <v-dialog v-model="dialog" max-width="1000px">
@@ -386,7 +385,10 @@ const getCategories = () => {
             </template>
             <template v-slot:item.actions="{ item }">
               <div class="item-btm">
-                <BaseButton :icon="mdiArrowDownBold" @click="download('/api/Document/download/9')"></BaseButton>
+                <BaseButton
+                  :icon="mdiArrowDownBold"
+                  @click="download(`/api/Document/download/${item.id}`,item.title +item.documentExtension )"
+                ></BaseButton>
                 <BaseButton :icon="mdiPencil" @click="showEditDialog(item.id)"></BaseButton>
                 <BaseButton :icon="mdiInformation" @click="showDialog(item.id)"></BaseButton>
               </div>

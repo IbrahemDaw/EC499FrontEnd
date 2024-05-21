@@ -1,5 +1,6 @@
 <script setup>
-import { reactive } from 'vue'
+import { reactive, onMounted, onBeforeMount } from 'vue'
+import { get, put } from '@/services/apiServices'
 import { useMainStore } from '@/stores/main'
 import { mdiAccount, mdiMail, mdiAsterisk, mdiFormTextboxPassword, mdiGithub } from '@mdi/js'
 import SectionMain from '@/components/SectionMain.vue'
@@ -17,48 +18,43 @@ import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.
 const mainStore = useMainStore()
 
 const profileForm = reactive({
-  name: mainStore.userName,
-  email: mainStore.userEmail
+  name: '',
+  email: ''
 })
-
+const getProfile = () => {
+  get('api/UserManagement/Profile').then((response) => {
+    profileForm.name = response.data.fullName
+    profileForm.email = response.data.email
+  })
+}
 const passwordForm = reactive({
-  password_current: '',
+  currentPassword: '',
   password: '',
   password_confirmation: ''
 })
-
+onBeforeMount(getProfile)
 const submitProfile = () => {
-  mainStore.setUser(profileForm)
+  put('api/UserManagement/Profile', {
+    fullName: profileForm.name,
+    email: profileForm.email
+  })
 }
 
 const submitPass = () => {
-  //
+  put('api/UserManagement/CheangePassword', passwordForm).catch((e) => {
+    alert(e.response.data)
+  })
 }
 </script>
-
+1
 <template>
   <LayoutAuthenticated>
     <SectionMain>
       <SectionTitleLineWithButton :icon="mdiAccount" title="Profile" main>
-        <BaseButton
-          href="https://github.com/justboil/admin-one-vue-tailwind"
-          target="_blank"
-          :icon="mdiGithub"
-          label="Star on GitHub"
-          color="contrast"
-          rounded-full
-          small
-        />
       </SectionTitleLineWithButton>
-
-      <UserCard class="mb-6" />
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <CardBox is-form @submit.prevent="submitProfile">
-          <FormField label="Avatar" help="Max 500kb">
-            <FormFilePicker label="Upload" />
-          </FormField>
-
           <FormField label="Name" help="Required. Your name">
             <FormControl
               v-model="profileForm.name"
@@ -82,7 +78,6 @@ const submitPass = () => {
           <template #footer>
             <BaseButtons>
               <BaseButton color="info" type="submit" label="Submit" />
-              <BaseButton color="info" label="Options" outline />
             </BaseButtons>
           </template>
         </CardBox>
@@ -90,7 +85,7 @@ const submitPass = () => {
         <CardBox is-form @submit.prevent="submitPass">
           <FormField label="Current password" help="Required. Your current password">
             <FormControl
-              v-model="passwordForm.password_current"
+              v-model="passwordForm.currentPassword"
               :icon="mdiAsterisk"
               name="password_current"
               type="password"
@@ -126,7 +121,6 @@ const submitPass = () => {
           <template #footer>
             <BaseButtons>
               <BaseButton type="submit" color="info" label="Submit" />
-              <BaseButton color="info" label="Options" outline />
             </BaseButtons>
           </template>
         </CardBox>
