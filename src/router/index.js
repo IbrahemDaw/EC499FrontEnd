@@ -65,6 +65,15 @@ const routes = [
   },
   {
     meta: {
+      title: 'Gradustion',
+      requiresAuth: true
+    },
+    path: '/gradustion',
+    name: 'Gradustion',
+    component: () => import('@/views/Documents/GradustionProjectTableView.vue')
+  },
+  {
+    meta: {
       title: 'Users',
       requiresAuth: true
     },
@@ -83,39 +92,12 @@ const routes = [
   },
   {
     meta: {
-      title: 'Forms',
-      requiresAuth: true
-    },
-    path: '/forms',
-    name: 'forms',
-    component: () => import('@/views/FormsView.vue')
-  },
-  {
-    meta: {
       title: 'Profile',
       requiresAuth: true
     },
     path: '/profile',
     name: 'profile',
     component: () => import('@/views/ProfileView.vue')
-  },
-  {
-    meta: {
-      title: 'Ui',
-      requiresAuth: true
-    },
-    path: '/ui',
-    name: 'ui',
-    component: () => import('@/views/UiView.vue')
-  },
-  {
-    meta: {
-      title: 'Responsive layout',
-      requiresAuth: true
-    },
-    path: '/responsive',
-    name: 'responsive',
-    component: () => import('@/views/ResponsiveView.vue')
   },
   {
     meta: {

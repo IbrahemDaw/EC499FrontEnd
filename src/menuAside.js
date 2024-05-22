@@ -33,12 +33,10 @@ export default [
         to: '/userTable',
         label: 'Users',
         icon: mdiAccountGroup,
-        showValue: 'User',
-        show: JSON.parse(localStorage.getItem('pages')).user
+        showValue: 'User'
       },
       {
         to: '/roleTable',
-        show: JSON.parse(localStorage.getItem('pages')).role,
         label: 'Roles',
         showValue: 'Role',
         icon: mdiAccountGroup
@@ -52,22 +50,26 @@ export default [
     menu: [
       {
         to: '/tags',
-        show: JSON.parse(localStorage.getItem('pages')).tag,
         showValue: 'Tag',
         label: 'Tags',
         icon: mdiCodeTags
       },
       {
         to: '/categories',
-        show: JSON.parse(localStorage.getItem('pages')).category,
+        showValue: 'Category',
         label: 'Categories',
         icon: mdiFormatListGroup
       },
       {
         to: '/documents',
         showValue: 'Document',
-        show: JSON.parse(localStorage.getItem('pages')).user,
         label: 'Documents',
+        icon: mdiFileDocument
+      },
+      {
+        to: '/gradustion',
+        showValue: 'GradustionProject',
+        label: 'GraduationProject',
         icon: mdiFileDocument
       }
     ]
