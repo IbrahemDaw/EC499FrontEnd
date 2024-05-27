@@ -102,7 +102,6 @@ const routes = [
   {
     meta: {
       title: 'Error'
-      // Assuming you want the Error view to be accessible without authentication
     },
     path: '/error',
     name: 'error',
