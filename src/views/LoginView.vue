@@ -33,7 +33,7 @@ const submit = async () => {
     .then((respons) => {
       localStorage.setItem('user-token', respons.data.token)
       localStorage.setItem('pages',JSON.stringify(respons.data.pages))
-      router.push('/documents')
+      router.push('/profile')
     })
     .catch((e) => {
       error.value = !error.value
